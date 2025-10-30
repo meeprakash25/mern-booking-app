@@ -4,7 +4,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "dev": "dotenv -e .env.local -- nodemon",
-    "build": "npm install && npx tsc",
+    "build": "npm install --include=dev && npx tsc",
     "start": "node ./dist/index.js",
     "e2e": "dotenv -e .env.e2e -- nodemon"
   },
