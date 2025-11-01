@@ -9,7 +9,7 @@ const GuestsSection = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold gap-10">Guests</h2>
-      <div className="grid grid-cols-2 p-6 gap-5 bg-gray-300 rounded-sm">
+      <div className="grid md:grid-cols-2 p-6 gap-5 bg-gray-300 rounded-sm">
         <label htmlFor="adultCount" className="text-gray-700 text-sm font-semibold">
           Number of Adults
           <input

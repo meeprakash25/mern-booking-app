@@ -20,7 +20,7 @@ const SignIn = () => {
   const navigate = useNavigate()
   const { showToast } = useAppContext()
 
-  const mutation = useMutation<ApiResponse, Error, SignInFormData>({
+  const {mutate, isPending} = useMutation<ApiResponse, Error, SignInFormData>({
     mutationFn: apiClient.signIn,
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ["validateToken"] })
@@ -34,7 +34,7 @@ const SignIn = () => {
   })
 
   const onSubmit = handleSubmit((data) => {
-    mutation.mutate(data)
+    mutate(data)
   })
 
   return (
@@ -68,12 +68,16 @@ const SignIn = () => {
       </label>
       <div className="flex items-center justify-between">
         <span className="text-sm">
-          Not Registered? <Link
-            className="hover:underline hover:text-blue-500 text-blue-600"
-            to="/register">Create an account here</Link>
+          Not Registered?{" "}
+          <Link className="hover:underline hover:text-blue-500 text-blue-600" to="/register">
+            Create an account here
+          </Link>
         </span>
-        <button type="submit" className="bg-blue-700 px-4 py-2 rounded text-white hover:bg-blue-800 active:bg-blue-700">
-          Sign In
+        <button
+          disabled={isPending}
+          type="submit"
+          className={`bg-blue-700 px-4 py-2 rounded text-white whitespace-nowrap hover:bg-blue-800 active:bg-blue-700 ${isPending ? "disabled" : ""}`}>
+          {isPending ? "Please wait..." : "Sign In"}
         </button>
       </div>
     </form>

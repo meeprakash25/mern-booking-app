@@ -52,7 +52,7 @@ const DetailsSection = () => {
         />
         {errors.description && <span className="text-red-500">{errors.description.message}</span>}
       </label>
-      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 w-[50%]">
+      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 md:w-[50%]">
         Price Per Night
         <input
           type="number"
@@ -63,7 +63,7 @@ const DetailsSection = () => {
         />
         {errors.pricePerNight && <span className="text-red-500">{errors.pricePerNight.message}</span>}
       </label>
-      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 w-[50%]">
+      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 md:w-[50%]">
         Star Rating
         <select
           {...register("starRating", {

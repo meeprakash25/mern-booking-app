@@ -8,7 +8,7 @@ const SignOutButton = () => {
   const { showToast } = useAppContext()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const mutation = useMutation<ApiResponse, Error>({
+  const { mutate, isPending } = useMutation<ApiResponse, Error>({
     mutationFn: apiClient.signOut,
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ["validateToken"] })
@@ -21,14 +21,16 @@ const SignOutButton = () => {
   })
 
   const handleClick = () => {
-    mutation.mutate()
+    mutate()
   }
 
   return (
     <button
+      disabled={isPending}
       onClick={handleClick}
-      className="flex items-center text-blue-600 px-3 font-bold bg-white hover:bg-gray-100 whitespace-nowrap rounded">
-      Sign Out
+      className={`flex items-center text-blue-600 px-3 py-2 font-bold bg-white hover:bg-gray-100 whitespace-nowrap rounded 
+        ${isPending ? "disabled" : ""}`}>
+      {isPending ? "Signing out..." : "Sign Out"}
     </button>
   )
 }

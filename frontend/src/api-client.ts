@@ -25,10 +25,11 @@ export const validateToken = async () => {
   const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
     credentials: "include",
   })
+  const responseBody = await response.json()
   if (!response.ok) {
     throw new Error("Token invalid")
   }
-  return await response.json()
+  return responseBody
 }
 
 export const signIn = async (formData: SignInFormData): Promise<ApiResponse> => {
@@ -41,12 +42,12 @@ export const signIn = async (formData: SignInFormData): Promise<ApiResponse> => 
     body: JSON.stringify(formData),
   })
 
-  const body = await response.json()
+  const responseBody = await response.json()
 
   if (!response.ok) {
-    throw new Error(body.message)
+    throw new Error(responseBody.message)
   }
-  return body
+  return responseBody
 }
 
 export const signOut = async (): Promise<ApiResponse> => {
@@ -55,13 +56,13 @@ export const signOut = async (): Promise<ApiResponse> => {
     method: "POST",
   })
 
-  const body = await response.json()
+  const responseBody = await response.json()
 
   if (!response.ok) {
     throw new Error("Error during logout")
   }
 
-  return body
+  return responseBody
 }
 
 export const addMyHotel = async (hotelFormData: FormData): Promise<ApiResponse> => {

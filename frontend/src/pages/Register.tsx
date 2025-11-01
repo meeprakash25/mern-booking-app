@@ -24,7 +24,7 @@ const Register = () => {
     formState: { errors },
   } = useForm<RegisterFormData>()
 
-  const mutation = useMutation<ApiResponse, Error, RegisterFormData>({
+  const { mutate, isPending } = useMutation<ApiResponse, Error, RegisterFormData>({
     mutationFn: apiClient.register,
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ["validateToken"] })
@@ -38,8 +38,9 @@ const Register = () => {
   })
 
   const onSubmit = handleSubmit((data) => {
-    mutation.mutate(data)
+    mutate(data)
   })
+
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
       <h2 className="text-3xl font-bold">Create an Account</h2>
@@ -120,8 +121,13 @@ const Register = () => {
             Signin here
           </Link>
         </span>
-        <button type="submit" className="bg-blue-700 px-4 py-2 rounded text-white hover:bg-blue-800 active:bg-blue-700">
-          Create Account
+        <button
+          disabled={isPending}
+          type="submit"
+          className={`bg-blue-700 px-4 py-2 rounded text-white whitespace-nowrap hover:bg-blue-800 active:bg-blue-700 ${
+            isPending ? " disabled" : ""
+          }`}>
+          {isPending ? "Please wait..." : "Create Account"}
         </button>
       </div>
     </form>
