@@ -1,0 +1,41 @@
+import React from "react"
+import { hotelFacilities } from "../../config/hotel-options-configs"
+import { useFormContext } from "react-hook-form"
+import type { HotelFormData } from "../ManageHotelForm"
+
+const FacilitiesSection = () => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<HotelFormData>()
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold mb-3">Facilities</h2>
+      <div className="grid grid-cols-5 gap-3">
+        {hotelFacilities.map((facility) => (
+          <label key={facility} htmlFor={facility} className="text-sm flex gap-1 text-gray-700">
+            <input
+              type="checkbox"
+              id={facility}
+              value={facility}
+              {...register("facilities", {
+                validate: (facilities) => {
+                  if (facilities && facilities.length > 0) {
+                    return true
+                  } else {
+                    return "Facilities field is required"
+                  }
+                },
+              })}
+            />
+            <span> {facility}</span>
+          </label>
+        ))}
+      </div>
+      {errors.facilities && <span className="text-red-500 text-sm font-bold">{errors.facilities.message}</span>}
+    </div>
+  )
+}
+
+export default FacilitiesSection

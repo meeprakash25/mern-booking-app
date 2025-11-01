@@ -120,7 +120,7 @@ const Register = () => {
             Signin here
           </Link>
         </span>
-        <button type="submit" className="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-600 active:bg-blue-700">
+        <button type="submit" className="bg-blue-700 px-4 py-2 rounded text-white hover:bg-blue-800 active:bg-blue-700">
           Create Account
         </button>
       </div>
