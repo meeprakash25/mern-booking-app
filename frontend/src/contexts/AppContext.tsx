@@ -12,7 +12,7 @@ type ToastMessageType = {
 
 type AppContextType = {
   showToast: (toastMessage: ToastMessageType) => void
-  isLoggedIn: boolean,
+  isLoggedIn: boolean
   verifyingToken?: boolean
 }
 
@@ -28,7 +28,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   })
 
   useEffect(() => {
-    if(isError) {
+    if (isError) {
       navigate("/sign-in")
     }
   }, [isError])
@@ -40,7 +40,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
           setToast(toastMessage)
         },
         isLoggedIn: !isError,
-        verifyingToken: isPending
+        verifyingToken: isPending,
       }}>
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(undefined)} />}
       {children}

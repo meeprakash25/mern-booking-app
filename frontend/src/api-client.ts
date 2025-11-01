@@ -1,5 +1,5 @@
 import type { RegisterFormData } from "./pages/Register"
-import type { ApiResponse } from "./types/ApiResponse"
+import type { ApiResponse, HotelListApiResponse } from "./types/ApiResponse"
 import type { SignInFormData } from "./pages/SignIn"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -72,9 +72,23 @@ export const addMyHotel = async (hotelFormData: FormData): Promise<ApiResponse> 
     body: hotelFormData,
   })
 
-  if(!response.ok) {
+  if (!response.ok) {
     throw new Error("Failed to add hotel")
   }
 
   return await response.json()
+}
+
+export const fetchMyHotels = async (): Promise<HotelListApiResponse> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+    credentials: "include",
+  })
+
+  const responseBody = await response.json()
+
+  if (!response.ok) {
+    throw new Error("Error fetching hotels")
+  }
+
+  return responseBody
 }

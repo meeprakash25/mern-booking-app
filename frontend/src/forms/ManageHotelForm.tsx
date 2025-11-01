@@ -65,7 +65,7 @@ const ManageHotelForm = ({ onSave, isLoading }: Props) => {
         <div className="flex justify-between">
           <div>
             <Link
-              to="/sign-in"
+              to="/my-hotels"
               type="button"
               className="flex items-center text-blue-600 px-3 py-2 font-bold bg-gray-200 hover:bg-gray-300 active:bg-gray-300 whitespace-nowrap rounded">
               Cancel

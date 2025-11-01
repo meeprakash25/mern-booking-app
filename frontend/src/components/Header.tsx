@@ -13,10 +13,10 @@ const Header = () => {
     <>
       {isLoggedIn ? (
         <>
-          <Link className={buttonClasses} onClick={() => setIsMenuOpen(false)} to="my-bookings">
+          <Link className={buttonClasses} onClick={() => setIsMenuOpen(false)} to="/my-bookings">
             My Bookings
           </Link>
-          <Link className={buttonClasses} onClick={() => setIsMenuOpen(false)} to="my-hotels">
+          <Link className={buttonClasses} onClick={() => setIsMenuOpen(false)} to="/my-hotels">
             My Hotels
           </Link>
           <hr />
@@ -37,7 +37,7 @@ const Header = () => {
   )
 
   return (
-    <nav className="bg-blue-800 text-white fixed w-full shadow-xl">
+    <nav className="bg-blue-800 text-white fixed w-full shadow-xl z-10 opacity-98">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex flex-row w-full justify-between">
@@ -58,13 +58,13 @@ const Header = () => {
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
                   {" "}
-                  <path d="M4 18L20 18" stroke="#fcfcfc" stroke-width="2" stroke-linecap="round"></path>{" "}
-                  <path d="M4 12L20 12" stroke="#fcfcfc" stroke-width="2" stroke-linecap="round"></path>{" "}
-                  <path d="M4 6L20 6" stroke="#fcfcfc" stroke-width="2" stroke-linecap="round"></path>{" "}
+                  <path d="M4 18L20 18" stroke="#fcfcfc" strokeWidth="2" strokeLinecap="round"></path>{" "}
+                  <path d="M4 12L20 12" stroke="#fcfcfc" strokeWidth="2" strokeLinecap="round"></path>{" "}
+                  <path d="M4 6L20 6" stroke="#fcfcfc" strokeWidth="2" strokeLinecap="round"></path>{" "}
                 </g>
               </svg>
             </button>
