@@ -3,7 +3,11 @@ import { hotelTypes } from "../../config/hotel-options-configs"
 import type { HotelFormData } from "../ManageHotelForm"
 
 const TypeSection = () => {
-  const { register, watch, formState:{errors} } = useFormContext<HotelFormData>()
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext<HotelFormData>()
   const typeWatch = watch("type")
   return (
     <div>
@@ -24,16 +28,14 @@ const TypeSection = () => {
               value={type}
               {...register("type", {
                 required: "Type field is required",
-              }) }
+              })}
               className="hidden"
             />
             <span> {type}</span>
           </label>
         ))}
       </div>
-      { errors.type && (
-        <span className="text-red-500 text-sm font-bold">{errors.type.message}</span>
-      )}
+      {errors.type && <span className="text-red-500 text-sm font-bold">{errors.type.message}</span>}
     </div>
   )
 }
