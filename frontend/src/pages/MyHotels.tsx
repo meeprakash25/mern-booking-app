@@ -9,7 +9,6 @@ const MyHotels = () => {
   const {
     data: HotelData,
     isError,
-    error,
     isPending,
   } = useQuery<HotelListApiResponse, Error>({
     queryKey: ["fetchMyHotels"],
