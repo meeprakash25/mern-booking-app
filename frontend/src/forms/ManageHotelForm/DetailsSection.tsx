@@ -8,7 +8,6 @@ const DetailsSection = () => {
   } = useFormContext<HotelFormData>()
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-3xl font-bold mb-3">Add Hotel</h1>
       <h1 className="text-2xl font-bold">Basic Details</h1>
       <label htmlFor="name" className="text-gray-700 text-sm font-bold flex-1">
         Name
@@ -52,7 +51,7 @@ const DetailsSection = () => {
         />
         {errors.description && <span className="text-red-500">{errors.description.message}</span>}
       </label>
-      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 md:w-[50%]">
+      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 lg:w-[50%]">
         Price Per Night
         <input
           type="number"
@@ -63,7 +62,7 @@ const DetailsSection = () => {
         />
         {errors.pricePerNight && <span className="text-red-500">{errors.pricePerNight.message}</span>}
       </label>
-      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 md:w-[50%]">
+      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 lg:w-[50%]">
         Star Rating
         <select
           {...register("starRating", {

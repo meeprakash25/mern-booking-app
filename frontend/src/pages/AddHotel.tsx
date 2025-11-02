@@ -1,14 +1,19 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import ManageHotelForm from "../forms/ManageHotelForm"
 import { useAppContext } from "../contexts/AppContext"
 import * as apiClient from "../api-client"
+import { useNavigate } from "react-router-dom"
 
 const AddHotel = () => {
-  const {showToast} = useAppContext()
+  const { showToast } = useAppContext()
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const { mutate, isPending } = useMutation({
     mutationFn: apiClient.addMyHotel,
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["fetchMyHotels"] })
       showToast({ message: data.message, type: "SUCCESS" })
+      navigate("/my-hotels")
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: "ERROR" })

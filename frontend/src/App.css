@@ -1,0 +1,22 @@
+.toast-transition {
+  transition: opacity 0.6s ease;
+}
+.toast-fade-in {
+  opacity: 1;
+}
+.toast-fade-out {
+  opacity: 0;
+}
+
+.animate-spin {
+  animation: animate 2s infinite;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}

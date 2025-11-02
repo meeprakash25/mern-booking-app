@@ -8,3 +8,7 @@ export interface ApiResponse {
 export interface HotelListApiResponse extends ApiResponse {
   data: [HotelType]
 }
+
+export interface HotelByIdApiResponse extends ApiResponse {
+  data: HotelType
+}

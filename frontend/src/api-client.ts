@@ -1,6 +1,7 @@
 import type { RegisterFormData } from "./pages/Register"
-import type { ApiResponse, HotelListApiResponse } from "./types/ApiResponse"
+import type { ApiResponse, HotelByIdApiResponse, HotelListApiResponse } from "./types/ApiResponse"
 import type { SignInFormData } from "./pages/SignIn"
+import type { HotelFormData } from "./forms/ManageHotelForm"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -88,6 +89,35 @@ export const fetchMyHotels = async (): Promise<HotelListApiResponse> => {
 
   if (!response.ok) {
     throw new Error("Error fetching hotels")
+  }
+
+  return responseBody
+}
+
+export const fetchMyHotelById = async (hotelId: string): Promise<HotelByIdApiResponse> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelId}`, {
+    credentials: "include",
+  })
+  const responseBody = await response.json()
+
+  if (!response.ok) {
+    throw new Error("Error fetching hotel")
+  }
+
+  return responseBody
+}
+
+export const updateMyHotelById = async (hotelFromData: FormData) => {
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelFromData.get("hotelId")}`, {
+    method: "PUT",
+    body: hotelFromData,
+    credentials: "include",
+  })
+
+  const responseBody = await response.json()
+
+  if(!response.ok) {
+    throw new Error(responseBody.message || "Failed to update hotel")
   }
 
   return responseBody
