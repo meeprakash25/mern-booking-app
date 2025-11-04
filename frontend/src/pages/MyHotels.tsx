@@ -4,39 +4,22 @@ import * as apiClient from "../api-client"
 import type { HotelListApiResponse } from "../types/ApiResponse"
 import { BsBuilding, BsMap } from "react-icons/bs"
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi"
-import { FiCommand } from "react-icons/fi"
+import { LoadingHotels, Error, NoDataFound } from "../components/LoadingStatus"
 
 const MyHotels = () => {
   const {
-    data: HotelData,
-    isPending,
-  } = useQuery<HotelListApiResponse, Error>({
+    data: hotelData,
+    isLoading,
+    isFetching,
+    isRefetching,
+    error,
+    isError,
+  } = useQuery<HotelListApiResponse>({
     queryKey: ["fetchMyHotels"],
     queryFn: apiClient.fetchMyHotels,
     refetchOnWindowFocus: false,
     retry: false,
   })
-
-  if (isPending) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="flex items-center gap-2">
-          <span className='font-bold font-2xl'>Loading</span>
-          <FiCommand className="animate-spin font-small" />
-        </div>
-        <p className="text-gray-500">Please wait while we load your hotels</p>
-      </div>
-    )
-  }
-
-  if (!HotelData?.data) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h2 className="text-2xl font-bold">No hotels found</h2>
-        <p className="text-gray-500">You have not added any hotels yet</p>
-      </div>
-    )
-  }
 
   return (
     <>
@@ -49,42 +32,48 @@ const MyHotels = () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 gap-5 mt-5">
-        {HotelData.data.map((hotel, index) => (
-          <div
-            key={index}
-            className="flex flex-col justify-between border border-blue-300 bg-blue-100 hover:bg-blue-200 rounded-lg p-8 gap-5 shadow-dm hover:shadow-lg">
-            <h2 className="text-2xl font-bold">{hotel.name}</h2>
-            <div className="whitespace-pre-line">{hotel.description}</div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2">
-              <div className="border border-gray-400 rounded-sm p-3 flex items-center">
-                <BsMap className="mr-1" />
-                {hotel.city}, {hotel.country}
+        {isLoading ? (
+          <LoadingHotels />
+        ) :  isError ? <Error message={error.message} /> : (hotelData?.data && hotelData?.data.length > 0) ? (
+          hotelData.data.map((hotel, index) => (
+            <div
+              key={index}
+              className="flex flex-col justify-between border border-blue-300 bg-blue-100 hover:bg-blue-200 rounded-lg p-8 gap-5 shadow-dm hover:shadow-lg">
+              <h2 className="text-2xl font-bold">{hotel.name}</h2>
+              <div className="whitespace-pre-line">{hotel.description}</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2">
+                <div className="border border-gray-400 rounded-sm p-3 flex items-center">
+                  <BsMap className="mr-1" />
+                  {hotel.city}, {hotel.country}
+                </div>
+                <div className="border border-gray-400 rounded-sm p-3 flex items-center">
+                  <BsBuilding className="mr-1" />
+                  {hotel.type}
+                </div>
+                <div className="border border-gray-400 rounded-sm p-3 flex items-center">
+                  <BiMoney className="mr-1" />${hotel.pricePerNight} per night
+                </div>
+                <div className="border border-gray-400 rounded-sm p-3 flex items-center">
+                  <BiHotel className="mr-1" />
+                  {hotel.adultCount} adults, {hotel.childCount} children
+                </div>
+                <div className="border border-gray-400 rounded-sm p-3 flex items-center">
+                  <BiStar className="mr-1" />
+                  {hotel.starRating} Star
+                </div>
               </div>
-              <div className="border border-gray-400 rounded-sm p-3 flex items-center">
-                <BsBuilding className="mr-1" />
-                {hotel.type}
-              </div>
-              <div className="border border-gray-400 rounded-sm p-3 flex items-center">
-                <BiMoney className="mr-1" />${hotel.pricePerNight} per night
-              </div>
-              <div className="border border-gray-400 rounded-sm p-3 flex items-center">
-                <BiHotel className="mr-1" />
-                {hotel.adultCount} adults, {hotel.childCount} children
-              </div>
-              <div className="border border-gray-400 rounded-sm p-3 flex items-center">
-                <BiStar className="mr-1" />
-                {hotel.starRating} Star
+              <div className="flex justify-end">
+                <Link
+                  to={`/edit-hotel/${hotel._id}`}
+                  className={`bg-blue-700 px-4 py-2 rounded text-white whitespace-nowrap hover:bg-blue-800 active:bg-blue-700`}>
+                  View Details
+                </Link>
               </div>
             </div>
-            <div className="flex justify-end">
-              <Link
-                to={`/edit-hotel/${hotel._id}`}
-                className={`bg-blue-700 px-4 py-2 rounded text-white whitespace-nowrap hover:bg-blue-800 active:bg-blue-700`}>
-                View Details
-              </Link>
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <NoDataFound />
+        )}
       </div>
     </>
   )

@@ -29,7 +29,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isError) {
-      navigate("/sign-in")
+      // navigate("/sign-in")
     }
   }, [isError])
 

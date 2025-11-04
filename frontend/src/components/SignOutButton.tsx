@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { ApiResponse } from "../types/ApiResponse"
 import { useAppContext } from "../contexts/AppContext"
 import { useNavigate } from "react-router-dom"
+import { FiCommand } from "react-icons/fi"
 
 const SignOutButton = () => {
   const { showToast } = useAppContext()
@@ -30,7 +31,14 @@ const SignOutButton = () => {
       onClick={handleClick}
       className={`flex items-center text-blue-600 px-3 py-2 font-bold bg-white hover:bg-gray-100 whitespace-nowrap rounded 
         ${isPending ? "disabled" : ""}`}>
-      {isPending ? "Signing out..." : "Sign Out"}
+      {isPending ? (
+        <div className="flex items-center gap-2">
+          <span>Signing Out</span>
+          <FiCommand className="animate-spin font-small" />
+        </div>
+      ) : (
+        "Sign Out"
+      )}
     </button>
   )
 }

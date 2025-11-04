@@ -19,7 +19,7 @@ const DetailsSection = () => {
         />
         {errors.name && <span className="text-red-500">{errors.name.message}</span>}
       </label>
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-1 sm:gap-4">
         <label htmlFor="city" className="text-gray-700 text-sm font-bold flex-1">
           City
           <input
@@ -41,7 +41,7 @@ const DetailsSection = () => {
           {errors.country && <span className="text-red-500">{errors.country.message}</span>}
         </label>
       </div>
-      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1">
+      <label htmlFor="description" className="text-gray-700 text-sm font-bold flex-1">
         Description
         <textarea
           rows={8}
@@ -51,7 +51,7 @@ const DetailsSection = () => {
         />
         {errors.description && <span className="text-red-500">{errors.description.message}</span>}
       </label>
-      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 lg:w-[50%]">
+      <label htmlFor="pricePerNight" className="text-gray-700 text-sm font-bold flex-1 lg:w-[50%]">
         Price Per Night
         <input
           type="number"
@@ -62,12 +62,13 @@ const DetailsSection = () => {
         />
         {errors.pricePerNight && <span className="text-red-500">{errors.pricePerNight.message}</span>}
       </label>
-      <label htmlFor="country" className="text-gray-700 text-sm font-bold flex-1 lg:w-[50%]">
+      <label htmlFor="starRating" className="text-gray-700 text-sm font-bold flex-1 lg:w-[50%]">
         Star Rating
         <select
           {...register("starRating", {
               required: "Star rating field is required"
           }) }
+          id="starRating"
           className="border rounded w-full p-2 text-gray-700"
         >
           <option key={0} value="" className="text-sm font-bold">
