@@ -1,10 +1,10 @@
-import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
+import { useNavigate, useParams } from "react-router-dom"
 import * as apiClient from "../api-client"
-import ManageHotelForm from '../forms/ManageHotelForm'
-import type { HotelByIdApiResponse } from '../types/ApiResponse'
-import { useAppContext } from '../contexts/AppContext'
-import { FiCommand } from 'react-icons/fi'
+import ManageHotelForm from "../forms/ManageHotelForm"
+import type { HotelByIdApiResponse } from "../types/ApiResponse"
+import { useAppContext } from "../contexts/AppContext"
+import { FiCommand } from "react-icons/fi"
 
 const EditHotel = () => {
   const { hotelId } = useParams()
@@ -12,10 +12,17 @@ const EditHotel = () => {
   const queryClient = useQueryClient()
   const navigator = useNavigate()
 
-  const { data: hotel, isLoading: isFetchingHotel, isError, error } = useQuery<HotelByIdApiResponse>({
+  const {
+    data: hotel,
+    isLoading: isFetchingHotel,
+    isError,
+    error,
+  } = useQuery<HotelByIdApiResponse>({
     queryKey: ["fetchMyHotelById", hotelId],
     queryFn: () => apiClient.fetchMyHotelById(hotelId || ""),
-    // enabled: !!hotelId,
+    retry: false,
+    enabled: !!hotelId, // enable only if hotelId is present
+    refetchOnWindowFocus: false,
   })
 
   const { mutate, isPending: isUpdatinggHotel } = useMutation({
@@ -31,11 +38,11 @@ const EditHotel = () => {
     },
   })
 
-  if(isFetchingHotel) {
+  if (isFetchingHotel) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="flex items-center gap-2">
-          <span className='font-bold font-2xl'>Loading</span>
+          <span className="font-bold font-2xl">Loading</span>
           <FiCommand className="animate-spin font-small" />
         </div>
         <p className="text-gray-500">Please wait while we load the hotel details</p>
@@ -43,7 +50,7 @@ const EditHotel = () => {
     )
   }
 
-  if(!hotel?.data) {
+  if (!hotel?.data) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h2 className="text-2xl font-bold">Hotel not found</h2>
@@ -56,7 +63,7 @@ const EditHotel = () => {
     mutate(hotelFormData)
   }
 
-  return <ManageHotelForm onSave={handleSave} hotel={hotel.data} isLoading={ isUpdatinggHotel} />
+  return <ManageHotelForm onSave={handleSave} hotel={hotel.data} isLoading={isUpdatinggHotel} />
 }
 
 export default EditHotel

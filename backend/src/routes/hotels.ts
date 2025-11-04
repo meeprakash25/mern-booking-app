@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express"
 import Hotel from "../models/hotel"
+import { param, validationResult } from "express-validator"
 
 const router = express.Router()
 
@@ -90,5 +91,24 @@ const constructSearchQuery = (queryParams: any) => {
 
   return constructQuery
 }
+
+router.get(
+  "/:hotelId",
+  [param("hotelId").notEmpty().withMessage("Hotel id is required")],
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    const hotelId = req.params.hotelId.toString()
+    try {
+      const hotel = await Hotel.findById(hotelId)
+      res.status(200).json({ message: "Hotel fetched successfully", data: hotel })
+    } catch (error) {
+      console.error("Error in hotel detail route:", error)
+      res.status(500).json({ message: "Something went wrong" })
+    }
+  }
+)
 
 export default router

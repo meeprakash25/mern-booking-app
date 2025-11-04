@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import type { ApiResponse } from "../types/ApiResponse"
 import * as apiClient from "../api-client"
 import { useAppContext } from "../contexts/AppContext"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FiCommand } from "react-icons/fi"
 
 export type SignInFormData = {
@@ -13,6 +13,7 @@ export type SignInFormData = {
 
 const SignIn = () => {
   const queryClient = useQueryClient()
+  const location = useLocation()
   const {
     register,
     handleSubmit,
@@ -26,7 +27,7 @@ const SignIn = () => {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ["validateToken"] })
       showToast({ message: data?.message, type: "SUCCESS" })
-      navigate("/")
+      navigate(location.state?.from?.pathname || "/")
     },
     onError: (error: Error) => {
       console.log(error)
