@@ -11,6 +11,7 @@ import Search from "./pages/Search"
 import ScrollToTop from "./components/ScrollToTop"
 import HotelDetail from "./pages/HotelDetail"
 import Booking from "./pages/Booking"
+import MyBookings from "./pages/MyBookings"
 
 function App() {
   const { isLoggedIn } = useAppContext()
@@ -89,6 +90,14 @@ function App() {
               element={
                 <Layout>
                   <MyHotels />
+                </Layout>
+              }
+            />
+            <Route
+              path="/my-bookings"
+              element={
+                <Layout>
+                  <MyBookings />
                 </Layout>
               }
             />

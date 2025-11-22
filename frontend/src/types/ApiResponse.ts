@@ -12,3 +12,7 @@ export interface HotelListApiResponse extends ApiResponse {
 export interface HotelByIdApiResponse extends ApiResponse {
   data: HotelType
 }
+
+export interface MyBookingsApiResponse extends ApiResponse {
+  data: [HotelType]
+}

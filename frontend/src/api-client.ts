@@ -229,3 +229,15 @@ export const createRoomBooking = async (formData: BookingFormData): Promise<ApiR
 
   return responseBody
 }
+
+export const myBookings = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/my-bookings`, {
+    credentials:"include"
+  })
+  const responseBody = await response.json()
+  if (!response.ok) {
+    throw new Error("Error fetching my bookings")
+  }
+
+  return responseBody
+}
