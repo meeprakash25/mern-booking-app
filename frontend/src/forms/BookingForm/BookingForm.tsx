@@ -128,6 +128,7 @@ const BookingForm = ({ currentUser, paymentIntent }: Props) => {
         <div className="space-y-2">
           <h2 className="text-xl font-semibold">Payment Details</h2>
           <CardElement id="payment-element" className="border rounded-md p-2 text-sm" />
+          <div className="text-xs">Use test card: 4242 4242 4242 4242</div>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between gap-2">
