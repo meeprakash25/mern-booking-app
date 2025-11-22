@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query"
 import * as apiClient from "../../api-client"
 import { useAppContext } from "../../contexts/AppContext"
 import { FiCommand } from "react-icons/fi"
+import { useState } from "react"
 
 type Props = {
   currentUser: UserType
@@ -32,6 +33,7 @@ const BookingForm = ({ currentUser, paymentIntent }: Props) => {
   const elements = useElements()
   const { hotelId } = useParams()
   const { showToast } = useAppContext()
+  const [formSubmitting, setFormSubmitting] = useState(false)
 
   const { mutate: bookRoom, isPending } = useMutation({
     mutationFn: apiClient.createRoomBooking,
@@ -61,6 +63,7 @@ const BookingForm = ({ currentUser, paymentIntent }: Props) => {
   })
 
   const onSubmit = async (formData: BookingFormData) => {
+    setFormSubmitting(true)
     if (!stripe || !elements) {
       return
     }
@@ -69,10 +72,13 @@ const BookingForm = ({ currentUser, paymentIntent }: Props) => {
         card: elements.getElement(CardElement) as StripeCardElement,
       },
     })
+
+    setFormSubmitting(false)
     if (result.paymentIntent?.status === "succeeded") {
       bookRoom({ ...formData, paymentIntentId: result.paymentIntent?.id ?? "" })
+    } else {
+      showToast({ message: result.error?.message || "Error booking hotel", type: "ERROR" })
     }
-    showToast({ message: result.error?.message || "Error booking hotel", type: "ERROR" })
   }
 
   return (
@@ -142,12 +148,12 @@ const BookingForm = ({ currentUser, paymentIntent }: Props) => {
           </div>
           <div className="flex justify-end">
             <button
-              disabled={isPending}
+              disabled={isPending || formSubmitting}
               type="submit"
               className={`bg-blue-700 px-30 py-2 font-bold rounded text-white hover:bg-blue-800 active:bg-blue-700 w-full md:w-auto ${
-                isPending ? " disabled" : ""
+                isPending || formSubmitting ? " disabled" : ""
               }`}>
-              {isPending ? (
+              {isPending || formSubmitting ? (
                 <div className="flex items-center gap-2">
                   <span>Please wait</span>
                   <FiCommand className="animate-spin font-small" />
