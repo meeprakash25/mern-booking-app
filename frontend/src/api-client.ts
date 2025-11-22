@@ -1,10 +1,21 @@
 import type { RegisterFormData } from "./pages/Register"
 import type { ApiResponse, HotelByIdApiResponse, HotelListApiResponse } from "./types/ApiResponse"
 import type { SignInFormData } from "./pages/SignIn"
-import type { HotelFormData } from "./forms/ManageHotelForm"
-import type { HotelSearchResponseType } from "../../backend/src/shared/types/HotelType"
+import type { HotelSearchResponseType, PaymentIntentResponse } from "../../backend/src/shared/types/types"
+import type { BookingFormData } from "./forms/BookingForm/BookingForm"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
+export const fetchCurrentUser = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+    credentials: "include",
+  })
+  const responseBody = await response.json()
+  if (!response.ok) {
+    throw new Error(responseBody.message)
+  }
+  return responseBody
+}
 
 export const register = async (formData: RegisterFormData): Promise<ApiResponse> => {
   const response = await fetch(`${API_BASE_URL}/api/users/register`, {
@@ -146,10 +157,10 @@ export const searchHotels = async (searchParams: SearchParamsType): Promise<Hote
   queryParams.append("adultCount", searchParams.adultCount || "")
   queryParams.append("childCount", searchParams.childCount || "")
   queryParams.append("page", searchParams.page || "")
-  
+
   queryParams.append("maxPrice", searchParams.maxPrice || "")
   queryParams.append("sortOption", searchParams.sortOption || "")
-  
+
   searchParams.facilities?.forEach((facility) => {
     queryParams.append("facilities", facility)
   })
@@ -178,6 +189,42 @@ export const fetchHotelById = async (hotelId: string) => {
   const responseBody = await response.json()
   if (!response.ok) {
     throw new Error("Error fetching hotels")
+  }
+
+  return responseBody
+}
+
+export const createPaymentIntent = async (hotelId: string, numberOfNights: string): Promise<PaymentIntentResponse> => {
+  const response = await fetch(`${API_BASE_URL}/api/hotels/${hotelId}/bookings/payment-intent`, {
+    credentials: "include",
+    method: "POST",
+    body: JSON.stringify({ numberOfNights }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  })
+
+  const responseBody = await response.json()
+  if (!response.ok) {
+    throw new Error("Error fetching payment intent")
+  }
+
+  return responseBody
+}
+
+export const createRoomBooking = async (formData: BookingFormData): Promise<ApiResponse> => {
+  const response = await fetch(`${API_BASE_URL}/api/hotels/${formData.hotelId}/bookings`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "include",
+    body: JSON.stringify(formData)
+  })
+
+  const responseBody = await response.json()
+  if (!response.ok) {
+    throw new Error("Error fetching payment intent")
   }
 
   return responseBody

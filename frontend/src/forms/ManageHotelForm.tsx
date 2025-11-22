@@ -5,7 +5,7 @@ import FacilitiesSection from "./ManageHotelForm/FacilitiesSection"
 import GuestsSection from "./ManageHotelForm/GuestsSection"
 import ImagesSection from "./ManageHotelForm/ImagesSection"
 import { Link } from "react-router-dom"
-import type { HotelType } from "../../../backend/src/shared/types/HotelType"
+import type { HotelType } from "../../../backend/src/shared/types/types"
 import { useEffect } from "react"
 import { FiCommand } from "react-icons/fi"
 
@@ -59,7 +59,7 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
       formData.append(`facilities[${index}]`, facility)
     })
 
-    if(formDataJson.imageUrls) {
+    if (formDataJson.imageUrls) {
       formDataJson.imageUrls.forEach((url, index) => {
         formData.append(`imageUrls[${index}]`, url)
       })
@@ -73,9 +73,11 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
   })
 
   return (
-    <FormProvider { ...formMethods }>
+    <FormProvider {...formMethods}>
       <h1 className="text-3xl font-bold mb-4">Add Hotel</h1>
-      <form className="flex flex-col gap-10 border border-gray-300 rounded-lg p-5 sm:p-10 shadow-lg" onSubmit={onSubmit}>
+      <form
+        className="flex flex-col gap-10 border border-gray-300 rounded-lg p-5 sm:p-10 shadow-lg"
+        onSubmit={onSubmit}>
         <DetailsSection />
         <TypeSection />
         <FacilitiesSection />
@@ -97,11 +99,14 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
               className={`bg-blue-700 px-30 py-2 font-bold rounded text-white hover:bg-blue-800 active:bg-blue-700 w-full md:w-auto ${
                 isLoading ? " disabled" : ""
               }`}>
-              { isLoading ? (
+              {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <span>Saving</span><FiCommand className="animate-spin font-small" />
+                  <span>Saving</span>
+                  <FiCommand className="animate-spin font-small" />
                 </div>
-              ) : "Save"}
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </div>

@@ -4,6 +4,9 @@ import { useQuery } from "@tanstack/react-query"
 import * as apiClient from "../api-client"
 import { useNavigate } from "react-router-dom"
 import type { ApiResponse } from "../types/ApiResponse"
+import { loadStripe, type Stripe } from "@stripe/stripe-js"
+
+const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || ""
 
 type ToastMessageType = {
   message: string
@@ -14,9 +17,12 @@ type AppContextType = {
   showToast: (toastMessage: ToastMessageType) => void
   isLoggedIn: boolean
   verifyingToken?: boolean
+  stripePromise: Promise<Stripe | null>
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
+
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY)
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [toast, setToast] = useState<ToastMessageType | undefined>(undefined)
@@ -41,6 +47,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         },
         isLoggedIn: !isError,
         verifyingToken: isPending,
+        stripePromise,
       }}>
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(undefined)} />}
       {children}

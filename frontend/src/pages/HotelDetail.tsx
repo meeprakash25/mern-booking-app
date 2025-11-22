@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import * as apiClient from "../api-client"
 import type { HotelByIdApiResponse } from "../types/ApiResponse"
-import type { HotelType } from "../../../backend/src/shared/types/HotelType"
+import type { HotelType } from "../../../backend/src/shared/types/types"
 import { AiFillStar } from "react-icons/ai"
 import GuestInfoForm from "../forms/GuestInfoForm/GuestInfoForm"
 
@@ -16,7 +16,7 @@ const HotelDetail = () => {
     error,
     isError,
   } = useQuery<HotelByIdApiResponse>({
-    queryKey: ["hotelDetail", hotelId],
+    queryKey: ["fetchHotelById", hotelId],
     queryFn: () => apiClient.fetchHotelById((hotelId as string) || ""),
     retry: false,
     enabled: !!hotelId, // enable it only if hotelId is present

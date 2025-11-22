@@ -1,4 +1,4 @@
-import type { HotelType } from "../../../backend/src/shared/types/HotelType"
+import type { HotelType } from "../../../backend/src/shared/types/types"
 
 export interface ApiResponse {
   message: string

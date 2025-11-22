@@ -11,7 +11,7 @@ declare global {
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   // add a 4 second delay here
-  // await new Promise((resolve) => setTimeout(resolve, 3000))
+  // await new Promise((resolve) => setTimeout(resolve, 10000))
 
   const token = req.cookies["auth_token"]
   if (!token) {
