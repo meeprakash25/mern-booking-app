@@ -3,8 +3,8 @@ import { type PaymentIntentResponse, type UserType } from "../../../../backend/s
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import type { StripeCardElement } from "@stripe/stripe-js"
 import { useSearchContext } from "../../contexts/SearchContext"
-import { Link, useParams } from "react-router-dom"
-import { useMutation } from "@tanstack/react-query"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import * as apiClient from "../../api-client"
 import { useAppContext } from "../../contexts/AppContext"
 import { FiCommand } from "react-icons/fi"
@@ -34,11 +34,15 @@ const BookingForm = ({ currentUser, paymentIntent }: Props) => {
   const { hotelId } = useParams()
   const { showToast } = useAppContext()
   const [formSubmitting, setFormSubmitting] = useState(false)
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const { mutate: bookRoom, isPending } = useMutation({
     mutationFn: apiClient.createRoomBooking,
     onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ["myBookings"] })
       showToast({ message: data?.message || "Booking Saved!", type: "SUCCESS" })
+      navigate("/my-bookings")
     },
     onError: (error: Error) => {
       showToast({ message: error?.message, type: "ERROR" })

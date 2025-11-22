@@ -6,7 +6,6 @@ import { HotelType } from "../shared/types/types"
 const router = express.Router()
 
 // /api/my-bookings
-
 router.get("/", verifyToken, async (req: Request, res: Response) => {
   try {
     const hotels = await Hotel.find({
@@ -24,7 +23,6 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 
       return hotelWithUserBookings
     })
-
     res.status(200).json({message:"My bookings fetched successfully", data: results})
   } catch (error) {
     console.log(error)
