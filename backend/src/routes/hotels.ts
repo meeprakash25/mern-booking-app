@@ -138,6 +138,16 @@ const constructSearchQuery = (queryParams: any) => {
   return constructQuery
 }
 
+router.get("/", async (req: Request, res: Response) => {
+  try {
+    const hotels = await Hotel.find().sort("-lastUpdated")
+    res.status(200).json({message:"Hotels fetched successfully", data: hotels})
+  } catch (error) {
+    console.log("Error: ", error)
+    res.status(500).json({ message: "Something went wrong" })
+  }
+})
+
 router.get(
   "/:hotelId",
   [param("hotelId").notEmpty().withMessage("Hotel id is required")],

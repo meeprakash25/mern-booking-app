@@ -6,7 +6,7 @@ export interface ApiResponse {
 }
 
 export interface HotelListApiResponse extends ApiResponse {
-  data: [HotelType]
+  data: HotelType[]
 }
 
 export interface HotelByIdApiResponse extends ApiResponse {
@@ -14,5 +14,5 @@ export interface HotelByIdApiResponse extends ApiResponse {
 }
 
 export interface MyBookingsApiResponse extends ApiResponse {
-  data: [HotelType]
+  data: HotelType[]
 }
