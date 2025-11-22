@@ -165,7 +165,7 @@ router.post("/:hotelId/bookings/payment-intent", verifyToken, async (req: Reques
     const hotel = await Hotel.findById(hotelId)
 
     if (!hotel) {
-      return res.status(400).json({ message: "Hotel note found" })
+      return res.status(400).json({ message: "Hotel not found" })
     }
 
     const totalCost = hotel.pricePerNight * numberOfNights

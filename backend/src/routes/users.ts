@@ -17,7 +17,7 @@ router.get("/me", verifyToken, async (req: Request, res: Response) => {
     return res.status(200).json({ message: "User successfully retrieved", data: user })
   } catch (error) {
     console.log(error)
-    res.status(500).json({message: "Something went wrong"})
+    return res.status(500).json({message: "Something went wrong"})
   }
 })
 
