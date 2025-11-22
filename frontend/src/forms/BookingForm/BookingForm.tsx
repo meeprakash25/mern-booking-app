@@ -3,7 +3,7 @@ import { type PaymentIntentResponse, type UserType } from "../../../../backend/s
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import type { StripeCardElement } from "@stripe/stripe-js"
 import { useSearchContext } from "../../contexts/SearchContext"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import * as apiClient from "../../api-client"
 import { useAppContext } from "../../contexts/AppContext"
@@ -130,21 +130,33 @@ const BookingForm = ({ currentUser, paymentIntent }: Props) => {
           <CardElement id="payment-element" className="border rounded-md p-2 text-sm" />
         </div>
 
-        <button
-          disabled={isPending}
-          type="submit"
-          className={`bg-blue-700 px-4 py-2 rounded text-white whitespace-nowrap hover:bg-blue-800 active:bg-blue-700 ${
-            isPending ? "disabled" : ""
-          }`}>
-          {isPending ? (
-            <div className="flex items-center justify-center gap-2">
-              <span>Please wait</span>
-              <FiCommand className="animate-spin font-small" />
-            </div>
-          ) : (
-            "Confirm Booking"
-          )}
-        </button>
+        <div className="flex flex-col md:flex-row justify-between gap-2">
+          <div>
+            <Link
+              to={`/detail/${hotelId}`}
+              type="button"
+              className="flex items-center justify-center text-blue-600 px-30 py-2 font-bold bg-gray-200 hover:bg-gray-300 active:bg-gray-300 whitespace-nowrap rounded">
+              Cancel
+            </Link>
+          </div>
+          <div className="flex justify-end">
+            <button
+              disabled={isPending}
+              type="submit"
+              className={`bg-blue-700 px-30 py-2 font-bold rounded text-white hover:bg-blue-800 active:bg-blue-700 w-full md:w-auto ${
+                isPending ? " disabled" : ""
+              }`}>
+              {isPending ? (
+                <div className="flex items-center gap-2">
+                  <span>Please wait</span>
+                  <FiCommand className="animate-spin font-small" />
+                </div>
+              ) : (
+                "Confirm Booking"
+              )}
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   )
