@@ -5,7 +5,7 @@ import { useSearchContext } from "../contexts/SearchContext"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import BookingDetailSummery from "../components/BookingDetailSummery"
-import type { HotelByIdApiResponse } from "../types/ApiResponse"
+import type { HotelByIdApiResponse, PaymentIntentApiResponse, UserTypeApiResponse } from "../types/ApiResponse"
 import { Elements } from "@stripe/react-stripe-js"
 import { useAppContext } from "../contexts/AppContext"
 
@@ -28,7 +28,7 @@ const Booking = () => {
     isLoading: intentLoading,
     error: intentError,
     isError: isIntentError,
-  } = useQuery({
+  } = useQuery<PaymentIntentApiResponse>({
     queryKey: ["createPaymentIntent", hotelId, numberOfNights],
     queryFn: () => apiClient.createPaymentIntent(hotelId as string, numberOfNights.toString()),
     retry: false,
@@ -54,7 +54,7 @@ const Booking = () => {
     isLoading: userLoading,
     error: userError,
     isError: isUserError,
-  } = useQuery({
+  } = useQuery<UserTypeApiResponse>({
     queryKey: ["currentUser"],
     queryFn: apiClient.fetchCurrentUser,
     retry: false,

@@ -1,12 +1,19 @@
 import type { RegisterFormData } from "./pages/Register"
-import type { ApiResponse, HotelByIdApiResponse, HotelListApiResponse } from "./types/ApiResponse"
+import type {
+  ApiResponse,
+  HotelByIdApiResponse,
+  HotelListApiResponse,
+  MyBookingsApiResponse,
+  PaymentIntentApiResponse,
+  UserTypeApiResponse,
+  HotelSearchApiResponse,
+} from "./types/ApiResponse"
 import type { SignInFormData } from "./pages/SignIn"
-import type { HotelSearchResponseType, PaymentIntentResponseType } from "../../backend/src/shared/types/types"
 import type { BookingFormData } from "./forms/BookingForm/BookingForm"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-export const fetchCurrentUser = async () => {
+export const fetchCurrentUser = async (): Promise<UserTypeApiResponse> => {
   const response = await fetch(`${API_BASE_URL}/api/users/me`, {
     credentials: "include",
   })
@@ -34,7 +41,7 @@ export const register = async (formData: RegisterFormData): Promise<ApiResponse>
   return responseBody
 }
 
-export const validateToken = async () => {
+export const validateToken = async (): Promise<ApiResponse> => {
   const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
     credentials: "include",
   })
@@ -119,7 +126,7 @@ export const fetchMyHotelById = async (hotelId: string): Promise<HotelByIdApiRes
   return responseBody
 }
 
-export const updateMyHotelById = async (hotelFromData: FormData) => {
+export const updateMyHotelById = async (hotelFromData: FormData):Promise<ApiResponse> => {
   const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelFromData.get("hotelId")}`, {
     method: "PUT",
     body: hotelFromData,
@@ -149,7 +156,7 @@ export type SearchParamsType = {
   sortOption?: string
 }
 
-export const searchHotels = async (searchParams: SearchParamsType): Promise<HotelSearchResponseType> => {
+export const searchHotels = async (searchParams: SearchParamsType): Promise<HotelSearchApiResponse> => {
   const queryParams = new URLSearchParams()
   queryParams.append("destination", searchParams.destination || "")
   queryParams.append("checkIn", searchParams.checkIn || "")
@@ -194,7 +201,7 @@ export const fetchHotels = async (): Promise<HotelListApiResponse> => {
   return responseBody
 }
 
-export const fetchHotelById = async (hotelId: string) => {
+export const fetchHotelById = async (hotelId: string): Promise<HotelByIdApiResponse> => {
   const response = await fetch(`${API_BASE_URL}/api/hotels/${hotelId}`)
   const responseBody = await response.json()
   if (!response.ok) {
@@ -204,7 +211,7 @@ export const fetchHotelById = async (hotelId: string) => {
   return responseBody
 }
 
-export const createPaymentIntent = async (hotelId: string, numberOfNights: string): Promise<PaymentIntentResponseType> => {
+export const createPaymentIntent = async (hotelId: string, numberOfNights: string): Promise<PaymentIntentApiResponse> => {
   const response = await fetch(`${API_BASE_URL}/api/hotels/${hotelId}/bookings/payment-intent`, {
     credentials: "include",
     method: "POST",
@@ -240,9 +247,9 @@ export const createRoomBooking = async (formData: BookingFormData): Promise<ApiR
   return responseBody
 }
 
-export const myBookings = async () => {
+export const myBookings = async (): Promise<MyBookingsApiResponse> => {
   const response = await fetch(`${API_BASE_URL}/api/my-bookings`, {
-    credentials:"include"
+    credentials: "include",
   })
   const responseBody = await response.json()
   if (!response.ok) {

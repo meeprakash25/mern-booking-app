@@ -75,11 +75,11 @@ test("should edit hotel", async ({ page }) => {
 
   await page.waitForSelector('[name="name"]', { state: "attached" })
   // await expect(page.locator('[name="name"]')).toHaveValue("Dublin Getaways");
-  await page.locator('[name="name"]').fill("Dublin Getaways UPDATED")
+  await page.locator('[name="name"]').fill("Kathmandu Gateways UPDATED")
   await page.getByRole("button", { name: "Save" }).click()
   await expect(page.getByText("Hotel updated successfully")).toBeVisible()
 
   // await page.reload()
 
-  await expect(page.getByText("Dublin Getaways UPDATED").first()).toBeVisible()
+  await expect(page.getByText("Kathmandu Gateways UPDATED").first()).toBeVisible()
 })

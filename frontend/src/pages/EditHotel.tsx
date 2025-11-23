@@ -2,7 +2,7 @@ import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import * as apiClient from "../api-client"
 import ManageHotelForm from "../forms/ManageHotelForm"
-import type { HotelByIdApiResponse } from "../types/ApiResponse"
+import type { ApiResponse, HotelByIdApiResponse } from "../types/ApiResponse"
 import { useAppContext } from "../contexts/AppContext"
 import { FiCommand } from "react-icons/fi"
 
@@ -25,8 +25,8 @@ const EditHotel = () => {
     refetchOnWindowFocus: false,
   })
 
-  const { mutate, isPending: isUpdatinggHotel } = useMutation({
-    mutationFn: apiClient.updateMyHotelById,
+  const { mutate, isPending: isUpdatinggHotel } = useMutation<ApiResponse, Error, FormData>({
+    mutationFn: (hotelFormData: FormData) => apiClient.updateMyHotelById(hotelFormData),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["fetchMyHotels"] })
       queryClient.invalidateQueries({ queryKey: ["fetchMyHotelById", hotelId] })

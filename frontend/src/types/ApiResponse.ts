@@ -1,8 +1,17 @@
-import type { HotelType, UserType } from "../../../backend/src/shared/types/types"
+import type {
+  HotelType,
+  PaymentIntentType,
+  UserType,
+  HotelSearchResponseType,
+} from "../../../backend/src/shared/types/types"
 
 export interface ApiResponse {
   message: string
   data: Object
+}
+
+export interface HotelSearchApiResponse extends ApiResponse {
+  data: HotelSearchResponseType['data']
 }
 
 export interface HotelListApiResponse extends ApiResponse {
@@ -19,4 +28,8 @@ export interface MyBookingsApiResponse extends ApiResponse {
 
 export interface UserTypeApiResponse extends ApiResponse {
   data: UserType
+}
+
+export interface PaymentIntentApiResponse extends ApiResponse {
+  data: PaymentIntentType
 }
