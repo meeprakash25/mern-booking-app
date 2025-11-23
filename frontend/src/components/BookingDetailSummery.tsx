@@ -1,6 +1,7 @@
 import React from "react"
 import type { HotelType } from "../../../backend/src/shared/types/types"
 import { FiCommand } from "react-icons/fi"
+import type { HotelTypeApiResponse } from "../types/ApiResponse"
 
 type Props = {
   checkIn: Date
@@ -8,9 +9,9 @@ type Props = {
   adultCount: number
   childCount: number
   numberOfNights: number
-  hotel?: HotelType
+  hotel: HotelTypeApiResponse
   hotelLoading: boolean
-  hotelError: unknown
+  hotelError: Error | null
   isHotelError: boolean
 }
 
@@ -37,7 +38,7 @@ const BookingDetailSummery = ({
         <div>
           <div className="border-b border-slate-300 py-2">
             Location
-            <div className="font-bold">{` ${hotel?.name}, ${hotel?.city}, ${hotel?.country}`}</div>
+            <div className="font-bold">{` ${hotel?.data?.name}, ${hotel?.data?.city}, ${hotel?.data?.country}`}</div>
           </div>
           <div className="flex justify-between border-b border-slate-300 pb-2">
             <div>

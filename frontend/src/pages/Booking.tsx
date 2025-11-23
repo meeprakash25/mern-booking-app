@@ -70,7 +70,7 @@ const Booking = () => {
           adultCount={search.adultCount}
           childCount={search.childCount}
           numberOfNights={numberOfNights}
-          hotel={hotel?.data}
+          hotel={hotel}
           hotelLoading={hotelLoading}
           hotelError={hotelError}
           isHotelError={isHotelError}

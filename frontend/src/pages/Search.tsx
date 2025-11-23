@@ -36,8 +36,6 @@ const Search = () => {
   const {
     data: result,
     isLoading,
-    isRefetching,
-    isFetching,
     error,
     isError,
   } = useQuery({

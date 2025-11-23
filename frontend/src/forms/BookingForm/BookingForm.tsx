@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form"
-import { type PaymentIntentResponseType, type UserResponseType } from "../../../../backend/src/shared/types/types"
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import type { StripeCardElement } from "@stripe/stripe-js"
 import { useSearchContext } from "../../contexts/SearchContext"
@@ -9,10 +8,11 @@ import * as apiClient from "../../api-client"
 import { useAppContext } from "../../contexts/AppContext"
 import { FiCommand } from "react-icons/fi"
 import { useEffect, useState } from "react"
+import type { PaymentIntentApiResponse, UserTypeApiResponse } from "../../types/ApiResponse"
 
 type Props = {
-  currentUser: UserResponseType
-  paymentIntent: PaymentIntentResponseType
+  currentUser: UserTypeApiResponse|undefined
+  paymentIntent: PaymentIntentApiResponse|undefined
   userLoading: boolean
   userError: Error | null
   isUserError: boolean

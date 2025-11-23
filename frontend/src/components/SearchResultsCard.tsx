@@ -7,9 +7,13 @@ type Props = {
 }
 const SearchResultsCard = ({ hotel }: Props) => {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-[2fr_3fr] border border-gray-200 rounded-lg p-4 md:p-8 gap-8 shadow-lg">
+    <div className="grid grid-cols-1 xl:grid-cols-[2fr_3fr] border border-blue-300 hover:shadow-xl hover:scale-101 transition-transform duration-300 rounded-lg p-4 md:p-8 gap-8 shadow-lg">
       <div className="w-full h-auto">
-        <img src={hotel.imageUrls[0]} alt={hotel.name} className="w-full h-auto object-cover object-center rounded" />
+        <img
+          src={hotel.imageUrls[0]}
+          alt={hotel.name}
+          className="w-full h-auto object-cover object-center rounded hover:scale-105 transition-transform duration-300"
+        />
       </div>
       <div className="grid grid-rows-[1fr_1/2fr_1fr] md:grid-rows-[1fr_1fr_1fr]">
         <div className="my-1">
