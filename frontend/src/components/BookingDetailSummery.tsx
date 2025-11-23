@@ -9,7 +9,7 @@ type Props = {
   adultCount: number
   childCount: number
   numberOfNights: number
-  hotel: HotelTypeApiResponse
+  hotel: HotelTypeApiResponse | undefined
   hotelLoading: boolean
   hotelError: Error | null
   isHotelError: boolean

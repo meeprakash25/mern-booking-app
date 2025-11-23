@@ -11,8 +11,8 @@ import { useEffect, useState } from "react"
 import type { PaymentIntentApiResponse, UserTypeApiResponse } from "../../types/ApiResponse"
 
 type Props = {
-  currentUser: UserTypeApiResponse|undefined
-  paymentIntent: PaymentIntentApiResponse|undefined
+  currentUser: UserTypeApiResponse | undefined
+  paymentIntent: PaymentIntentApiResponse | undefined
   userLoading: boolean
   userError: Error | null
   isUserError: boolean
@@ -80,14 +80,14 @@ const BookingForm = ({
       checkIn: search.checkIn.toISOString(),
       checkOut: search.checkOut.toISOString(),
       hotelId: hotelId ?? "",
-      totalCost: paymentIntent?.data?.totalCost,
-      paymentIntentId: paymentIntent?.data?.paymentIntentId,
+      totalCost: paymentIntent?.data?.totalCost || 0,
+      paymentIntentId: paymentIntent?.data?.paymentIntentId || "",
     })
   }, [currentUser, paymentIntent, search, hotelId, reset])
 
   const onSubmit = async (formData: BookingFormData) => {
     setFormSubmitting(true)
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !paymentIntent) {
       return
     }
     const result = await stripe.confirmCardPayment(paymentIntent.data.clientSecret, {
