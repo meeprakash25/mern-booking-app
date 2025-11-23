@@ -37,6 +37,12 @@ export type BookingType = {
   totalCost: number
 }
 
+export type PaymentIntentType = {
+  paymentIntentId: string
+  clientSecret: string
+  totalCost: number
+}
+
 export type HotelSearchResponseType = {
   message: string
   data: {
@@ -49,11 +55,12 @@ export type HotelSearchResponseType = {
   }
 }
 
-export type PaymentIntentResponse = {
+export type PaymentIntentResponseType = {
   message: string
-  data: {
-    paymentIntentId: string
-    clientSecret: string
-    totalCost: number
-  }
+  data: PaymentIntentType
+}
+
+export type UserResponseType = {
+  message: string
+  data: UserType
 }

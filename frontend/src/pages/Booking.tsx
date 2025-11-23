@@ -23,7 +23,12 @@ const Booking = () => {
     }
   }, [search.checkIn, search.checkOut])
 
-  const { data: paymentIntentData } = useQuery({
+  const {
+    data: paymentIntent,
+    isLoading: intentLoading,
+    error: intentError,
+    isError: isIntentError,
+  } = useQuery({
     queryKey: ["createPaymentIntent", hotelId, numberOfNights],
     queryFn: () => apiClient.createPaymentIntent(hotelId as string, numberOfNights.toString()),
     retry: false,
@@ -33,11 +38,9 @@ const Booking = () => {
 
   const {
     data: hotel,
-    isLoading,
-    isFetching,
-    isRefetching,
-    error,
-    isError,
+    isLoading: hotelLoading,
+    error: hotelError,
+    isError: isHotelError,
   } = useQuery<HotelByIdApiResponse>({
     queryKey: ["fetchHotelById", hotelId],
     queryFn: () => apiClient.fetchHotelById((hotelId as string) || ""),
@@ -46,7 +49,12 @@ const Booking = () => {
     refetchOnWindowFocus: false,
   })
 
-  const { data: currentUser } = useQuery({
+  const {
+    data: currentUser,
+    isLoading: userLoading,
+    error: userError,
+    isError: isUserError,
+  } = useQuery({
     queryKey: ["currentUser"],
     queryFn: apiClient.fetchCurrentUser,
     retry: false,
@@ -55,21 +63,32 @@ const Booking = () => {
 
   return (
     <div className="grid md:grid-cols-[1fr_2fr] gap-2">
-      {hotel && (
+      {
         <BookingDetailSummery
           checkIn={search.checkIn}
           checkOut={search.checkOut}
           adultCount={search.adultCount}
           childCount={search.childCount}
           numberOfNights={numberOfNights}
-          hotel={hotel.data}
+          hotel={hotel?.data}
+          hotelLoading={hotelLoading}
+          hotelError={hotelError}
+          isHotelError={isHotelError}
         />
-      )}
-      {currentUser && paymentIntentData && (
-        <Elements stripe={stripePromise} options={{ clientSecret: paymentIntentData.data.clientSecret }}>
-          <BookingForm currentUser={ currentUser.data } paymentIntent={paymentIntentData} />
-        </Elements>
-      )}
+      }
+
+      <Elements stripe={stripePromise} options={{ clientSecret: paymentIntent?.data?.clientSecret }}>
+        <BookingForm
+          currentUser={currentUser}
+          paymentIntent={paymentIntent}
+          userLoading={userLoading}
+          userError={userError}
+          isUserError={isUserError}
+          intentLoading={intentLoading}
+          intentError={intentError}
+          isIntentError={isIntentError}
+        />
+      </Elements>
     </div>
   )
 }

@@ -22,10 +22,21 @@ const SearchBar = () => {
 
   const minDate = new Date()
   const oneDayInMilliSeconds = 86400000
-  const checkoutMinDate = new Date(Date.now() + oneDayInMilliSeconds)
+  const checkoutMinDate = checkIn
+    ? new Date(checkIn.getTime() + oneDayInMilliSeconds)
+    : new Date(Date.now() + oneDayInMilliSeconds)
   const maxDate = new Date()
   maxDate.setFullYear(maxDate.getFullYear() + 1)
-  
+
+  const handleCheckInChange = (date: Date) => {
+    setCheckIn(date)
+    const newCheckoutMinDate = new Date(date.getTime() + oneDayInMilliSeconds)
+    // If check-out is before/equal to new check-in, auto-update it
+    if (checkOut <= date) {
+      setCheckOut(newCheckoutMinDate)
+    }
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -67,7 +78,7 @@ const SearchBar = () => {
       <div className="">
         <DatePicker
           selected={checkIn}
-          onChange={(date) => setCheckIn(date as Date)}
+          onChange={(date) => handleCheckInChange(date as Date)}
           selectsStart
           startDate={checkIn}
           endDate={checkOut}

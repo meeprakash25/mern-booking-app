@@ -10,8 +10,6 @@ const MyHotels = () => {
   const {
     data: hotelData,
     isLoading,
-    isFetching,
-    isRefetching,
     error,
     isError,
   } = useQuery<HotelListApiResponse>({
@@ -38,7 +36,7 @@ const MyHotels = () => {
           hotelData.data.map((hotel, index) => (
             <div
               key={index}
-              className="flex flex-col justify-between border border-blue-300 bg-blue-100 hover:bg-blue-200 rounded-lg p-8 gap-5 shadow-dm hover:shadow-lg">
+              className="flex flex-col justify-between border border-blue-300 bg-blue-100 hover:bg-blue-200 rounded-lg p-8 gap-5 shadow-sm hover:shadow-lg">
               <h2 className="text-2xl font-bold">{hotel.name}</h2>
               <div className="whitespace-pre-line">{hotel.description}</div>
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2">

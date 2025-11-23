@@ -1,4 +1,4 @@
-import type { HotelType } from "../../../backend/src/shared/types/types"
+import type { HotelType, UserType } from "../../../backend/src/shared/types/types"
 
 export interface ApiResponse {
   message: string
@@ -15,4 +15,8 @@ export interface HotelByIdApiResponse extends ApiResponse {
 
 export interface MyBookingsApiResponse extends ApiResponse {
   data: HotelType[]
+}
+
+export interface UserTypeApiResponse extends ApiResponse {
+  data: UserType
 }

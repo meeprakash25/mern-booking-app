@@ -30,6 +30,7 @@ const EditHotel = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["fetchMyHotels"] })
       queryClient.invalidateQueries({ queryKey: ["fetchMyHotelById", hotelId] })
+      queryClient.invalidateQueries({ queryKey: ["createPaymentIntent", hotelId] })
       showToast({ message: data.message, type: "SUCCESS" })
       navigator("/my-hotels")
     },

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express"
 import Hotel from "../models/hotel"
-import { param, validationResult } from "express-validator"
+import { body, param, validationResult } from "express-validator"
 import Stripe from "stripe"
 import verifyToken from "../middleware/auth"
 import { BookingType } from "../shared/types/types"
@@ -9,46 +9,66 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 
 const router = express.Router()
 
-router.post("/:hotelId/bookings", verifyToken, async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
-    const paymentIntentId = req.body.paymentIntentId
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId as string)
-    if (!paymentIntent) {
-      return res.status(400).json({ message: "Payment intent not found" })
-    }
-
-    if (paymentIntent.metadata.hotelId !== req.params.hotelId || paymentIntent.metadata.userId !== req.userId) {
-      return res.status(400).json({ message: "Payment intent mistatch" })
-    }
-
-    if (paymentIntent.status !== "succeeded") {
-      return res.status(400).json({ message: `Payment intent not succeeded. Status: ${paymentIntent.status}` })
-    }
-
-    const newBooking: BookingType = {
-      ...req.body,
-      userId: req.userId,
-    }
-
-    const hotel = await Hotel.findOneAndUpdate(
-      { _id: req.params.hotelId },
-      {
-        $push: { bookings: newBooking },
-      }
-    )
-
-    if (!hotel) {
-      return res.status(400).json({ message: "Hotel not found" })
-    }
-
-    await hotel.save()
-
-    return res.status(200).json({ message: "Hotel booked successfully" })
+    const hotels = await Hotel.find().sort("-lastUpdated").limit(8)
+    res.status(200).json({ message: "Hotels fetched successfully", data: hotels })
   } catch (error) {
     console.log("Error: ", error)
-    res.status(500).json({ message: "Payment intent not found" })
+    res.status(500).json({ message: "Something went wrong" })
   }
 })
+
+router.post(
+  "/:hotelId/bookings",
+  verifyToken,
+  [
+    body("firstName").notEmpty().withMessage("First Name is required"),
+    body("lastName").notEmpty().withMessage("Last Name is required"),
+    body("email").notEmpty().withMessage("Email is required"),
+  ],
+  async (req: Request, res: Response) => {
+    try {
+      const paymentIntentId = req.body.paymentIntentId
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId as string)
+      if (!paymentIntent) {
+        return res.status(400).json({ message: "Payment intent not found" })
+      }
+
+      if (paymentIntent.metadata.hotelId !== req.params.hotelId || paymentIntent.metadata.userId !== req.userId) {
+        return res.status(400).json({ message: "Payment intent mistatch" })
+      }
+
+      if (paymentIntent.status !== "succeeded") {
+        return res.status(400).json({ message: `Payment intent not succeeded. Status: ${paymentIntent.status}` })
+      }
+
+      const newBooking: BookingType = {
+        ...req.body,
+        userId: req.userId,
+      }
+
+      const hotel = await Hotel.findOneAndUpdate(
+        { _id: req.params.hotelId },
+        {
+          $push: { bookings: newBooking },
+        },
+        { runValidators: true }
+      )
+
+      if (!hotel) {
+        return res.status(400).json({ message: "Hotel not found" })
+      }
+
+      await hotel.save()
+
+      return res.status(200).json({ message: "Hotel booked successfully" })
+    } catch (error) {
+      console.log("Error: ", error)
+      res.status(500).json({ message: "Failed to save the booking" })
+    }
+  }
+)
 
 router.get("/search", async (req: Request, res: Response) => {
   try {
@@ -137,16 +157,6 @@ const constructSearchQuery = (queryParams: any) => {
 
   return constructQuery
 }
-
-router.get("/", async (req: Request, res: Response) => {
-  try {
-    const hotels = await Hotel.find().sort("-lastUpdated")
-    res.status(200).json({message:"Hotels fetched successfully", data: hotels})
-  } catch (error) {
-    console.log("Error: ", error)
-    res.status(500).json({ message: "Something went wrong" })
-  }
-})
 
 router.get(
   "/:hotelId",
