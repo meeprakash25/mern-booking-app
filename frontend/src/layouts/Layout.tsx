@@ -6,19 +6,20 @@ import SearchBar from "../components/SearchBar"
 
 interface Props {
   children: React.ReactNode
+  showSearchBar?: boolean
 }
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, showSearchBar = false }: Props) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
       <Hero />
-      <div className="container mx-auto">
-        <SearchBar />
-      </div>
-      <div className="container mx-auto py-5 flex-1">
-        { children }
-      </div>
+      {showSearchBar && (
+        <div className="container mx-auto">
+          <SearchBar />
+        </div>
+      )}
+      <div className="container mx-auto py-5 flex-1">{children}</div>
       <Footer />
     </div>
   )

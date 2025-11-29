@@ -23,7 +23,7 @@ function App() {
         <Route
           path="/"
           element={
-            <Layout>
+            <Layout showSearchBar>
               <Home />
             </Layout>
           }
@@ -31,7 +31,7 @@ function App() {
         <Route
           path="/search"
           element={
-            <Layout>
+            <Layout showSearchBar>
               <Search />
             </Layout>
           }
@@ -39,7 +39,7 @@ function App() {
         <Route
           path="/detail/:hotelId"
           element={
-            <Layout>
+            <Layout showSearchBar>
               <HotelDetail />
             </Layout>
           }
